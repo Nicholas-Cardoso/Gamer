@@ -24,12 +24,12 @@ data class Gamer(val name: String, var email: String) {
         createHashId()
     }
 
-//    init {
-//        if (name.isNullOrBlank()) {
-//            throw IllegalArgumentException("O nome não pode ser aceito!")
-//        }
-//        this.email = validateEmail()
-//    }
+    init {
+        if (name.isNullOrBlank()) {
+            throw IllegalArgumentException("O nome não pode ser aceito!")
+        }
+        this.email = validateEmail()
+    }
 
     private fun createHashId() {
         val randomId = Random.nextInt(100000)
