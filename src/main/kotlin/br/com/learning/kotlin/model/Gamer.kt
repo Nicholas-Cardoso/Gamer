@@ -71,6 +71,7 @@ data class Gamer(val name: String, var email: String) : Recommended {
             }
         }
     }
+<<<<<<< HEAD
 
     fun rentGame(game: GameJson, period: PeriodRent): Rent {
         val rent = Rent(this, game, period)
@@ -105,3 +106,6 @@ data class Gamer(val name: String, var email: String) : Recommended {
                 "Média=$avg"
     }
 }
+=======
+}
+>>>>>>> 2dfb2f620cce13ad14caa6e4b832b4b3c5998ce3
