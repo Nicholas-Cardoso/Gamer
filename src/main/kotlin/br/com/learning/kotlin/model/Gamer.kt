@@ -3,7 +3,7 @@ package br.com.learning.kotlin.model
 import java.util.*
 import kotlin.random.Random
 
-data class Gamer(val name: String, var email: String) {
+data class Gamer(val name: String, var email: String) : Recommended {
     var dateOfBirth: String? = null
     var user: String? = null
         set(value) {
@@ -16,6 +16,9 @@ data class Gamer(val name: String, var email: String) {
         private set
 
     val listGames = mutableListOf<Game?>()
+    val listRents = mutableListOf<Rent>()
+    private val listPoints = mutableListOf<Int>()
+    var plan: Plan = DefaultPlan("BRONZE")
 
     constructor(name: String, email: String, dateOfBirth: String, user: String)
             : this(name, email) {
@@ -24,12 +27,12 @@ data class Gamer(val name: String, var email: String) {
         createHashId()
     }
 
-//    init {
-//        if (name.isNullOrBlank()) {
-//            throw IllegalArgumentException("O nome não pode ser aceito!")
-//        }
-//        this.email = validateEmail()
-//    }
+    init {
+        if (name.isNullOrBlank()) {
+            throw IllegalArgumentException("O nome não pode ser aceito!")
+        }
+        this.email = validateEmail()
+    }
 
     private fun createHashId() {
         val randomId = Random.nextInt(100000)
@@ -38,17 +41,13 @@ data class Gamer(val name: String, var email: String) {
         internalId = "$user#$hashId"
     }
 
-    private fun validateEmail (): String {
+    private fun validateEmail(): String {
         val regex = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
         if (regex.matches(email)) {
             return email
         } else {
             throw IllegalArgumentException("O email não pode ser aceito!")
         }
-    }
-
-    override fun toString(): String {
-        return "Gamer(name='$name', email='$email', dateOfBirth=$dateOfBirth, user=$user, internalId=$internalId)"
     }
 
     companion object {
@@ -67,7 +66,42 @@ data class Gamer(val name: String, var email: String) {
                 val user = scanner.nextLine()
 
                 return Gamer(name, email, dateOfBirth, user)
-            } else { return Gamer(name, email) }
+            } else {
+                return Gamer(name, email)
+            }
         }
+    }
+
+    fun rentGame(game: GameJson, period: PeriodRent): Rent {
+        val rent = Rent(this, game, period)
+        listRents.add(rent)
+
+        return rent
+    }
+
+    fun gamesInMonth(month: Int): List<GameJson> {
+        return listRents
+            .filter { rent -> rent.period.startDate.monthValue == month }
+            .map { rent -> rent.game }
+    }
+
+    override val avg: Double
+        get() = listPoints.average()
+
+    override fun recommend(point: Int) {
+        if (point < 1 || point > 10) {
+            println("Nota inválida. Insira uma nota entre 1 e 10")
+        }
+        listPoints.add(point)
+    }
+
+    override fun toString(): String {
+        return "Gamer: \n" +
+                "Name='$name', \n" +
+                "Email='$email', \n" +
+                "DateOfBirth=$dateOfBirth, \n" +
+                "User=$user, \n" +
+                "InternalId=$internalId \n" +
+                "Média=$avg"
     }
 }
