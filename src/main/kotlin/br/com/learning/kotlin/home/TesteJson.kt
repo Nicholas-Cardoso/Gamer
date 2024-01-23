@@ -1,34 +1,39 @@
 package br.com.learning.kotlin.home
 
 
-import br.com.learning.kotlin.model.PeriodRent
-import br.com.learning.kotlin.model.SubPlan
 import br.com.learning.kotlin.services.UseAPI
-import java.time.LocalDate
+import com.google.gson.GsonBuilder
+import java.io.File
 
 fun main() {
     val useAPI = UseAPI()
-    val gamer = useAPI.searchGamerJson().get(4)
 
-    gamer.plan = SubPlan("PRATA", 9.90, 3, 0.1)
+    val gamerCaroline = useAPI.searchGamerJson().get(3)
+    val jogoResidentVillage = useAPI.searchGameJson().get(10)
+    val jogoSpider = useAPI.searchGameJson().get(13)
+    val jogoTheLastOfUs = useAPI.searchGameJson().get(2)
+    val jogoDandara = useAPI.searchGameJson().get(5)
+    val jogoAssassins = useAPI.searchGameJson().get(4)
+    val jogoCyber = useAPI.searchGameJson().get(6)
+    val jogoGod = useAPI.searchGameJson().get(7)
+    val jogoSkyrim = useAPI.searchGameJson().get(18)
 
-    val game = useAPI.searchGameJson().get(10)
-    val game2 = useAPI.searchGameJson().get(8)
-    val game3 = useAPI.searchGameJson().get(6)
+    gamerCaroline.recommendGame(jogoResidentVillage, 7)
+    gamerCaroline.recommendGame(jogoTheLastOfUs, 10)
+    gamerCaroline.recommendGame(jogoAssassins, 8)
+    gamerCaroline.recommendGame(jogoCyber, 7)
+    gamerCaroline.recommendGame(jogoGod, 10)
+    gamerCaroline.recommendGame(jogoDandara, 8)
+    gamerCaroline.recommendGame(jogoSkyrim, 8)
+    gamerCaroline.recommendGame(jogoSpider, 6)
 
-    val period = PeriodRent(LocalDate.now(), LocalDate.now().plusDays(5))
-    val period2 = PeriodRent(LocalDate.now(), LocalDate.now().plusDays(6))
-    val period3 = PeriodRent(LocalDate.now(), LocalDate.now().plusDays(7))
+    val gson = GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
+    val serializer = gson.toJson(gamerCaroline.listRecommendGame)
 
-    gamer.recommend(8)
-    gamer.recommend(8)
-    gamer.recommend(10)
+    println(serializer)
 
-    gamer.rentGame(game, period)
-    gamer.rentGame(game2, period2)
-    gamer.rentGame(game3, period3)
+    val file = File("gamesRecommended.json")
+    file.writeText(serializer)
 
-    println(gamer)
-
-    println(gamer.listRents)
+    println(file.absoluteFile)
 }

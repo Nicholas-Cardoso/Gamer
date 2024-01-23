@@ -4,6 +4,5 @@ interface Recommended {
     val avg: Double
 
     fun recommend(point: Int) {
-
     }
 }

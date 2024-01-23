@@ -17,6 +17,7 @@ data class Gamer(val name: String, var email: String) : Recommended {
 
     val listGames = mutableListOf<Game?>()
     val listRents = mutableListOf<Rent>()
+    val listRecommendGame = mutableListOf<GameJson>()
     private val listPoints = mutableListOf<Int>()
     var plan: Plan = DefaultPlan("BRONZE")
 
@@ -93,6 +94,11 @@ data class Gamer(val name: String, var email: String) : Recommended {
             println("Nota inválida. Insira uma nota entre 1 e 10")
         }
         listPoints.add(point)
+    }
+
+    fun recommendGame(game: GameJson, note: Int) {
+        game.listNotes.add(note)
+        listRecommendGame.add(game)
     }
 
     override fun toString(): String {
