@@ -12,6 +12,7 @@ data class Gamer(val name: String, var email: String) : Recommended {
                 createHashId()
             }
         }
+    var id: Int = 0
     var internalId: String? = null
         private set
 
@@ -19,12 +20,13 @@ data class Gamer(val name: String, var email: String) : Recommended {
     val listRents = mutableListOf<Rent>()
     val listRecommendGame = mutableListOf<GameJson>()
     private val listPoints = mutableListOf<Int>()
-    var plan: Plan = DefaultPlan("BRONZE")
+    var plan: Plan = DefaultPlan("BRONZE", 0)
 
-    constructor(name: String, email: String, dateOfBirth: String, user: String)
+    constructor(name: String, email: String, dateOfBirth: String?, user: String?, id: Int = 0)
             : this(name, email) {
         this.dateOfBirth = dateOfBirth
         this.user = user
+        this.id = id
         createHashId()
     }
 
@@ -102,12 +104,16 @@ data class Gamer(val name: String, var email: String) : Recommended {
     }
 
     override fun toString(): String {
-        return "Gamer: \n" +
-                "Name='$name', \n" +
-                "Email='$email', \n" +
-                "DateOfBirth=$dateOfBirth, \n" +
-                "User=$user, \n" +
-                "InternalId=$internalId \n" +
-                "Média=$avg"
+        return "\nGamer: \n" +
+                "name='$name', \n" +
+                "email='$email', \n" +
+                "dateOfBirth=$dateOfBirth, \n" +
+                "user=$user, \n" +
+                "id=$id, \n" +
+                "internalId=$internalId, \n" +
+                "plan=${plan.type} \n" +
+                "--------------------------------"
     }
+
+
 }

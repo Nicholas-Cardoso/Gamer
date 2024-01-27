@@ -1,8 +1,9 @@
 package br.com.learning.kotlin.model
 
 class DefaultPlan(
-    type: String
-) : Plan(type) {
+    type: String,
+    id: Int = 0
+) : Plan(type, id) {
     override fun getValue(rent: Rent): Double {
         var originValue = super.getValue(rent)
 
@@ -10,5 +11,10 @@ class DefaultPlan(
             originValue -= originValue * 0.1
         }
         return originValue
+    }
+
+    override fun toString(): String {
+        return "Type=$type, \n" +
+                "Id=$id"
     }
 }
